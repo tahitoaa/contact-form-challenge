@@ -9,14 +9,12 @@ L'application client est un projet créé avec create-react-app :
 
 https://fr.reactjs.org/docs/create-a-new-react-app.html
 
-son implémentation se trouve dans 
-
-``client\contact-form-client``
-
 pour lancer le client:
 
-``cd client\contact-form-client``
-``yarn start`` 
+```
+  cd client
+  yarn
+```
 
 Le client est alors accessible depuis ``http://127.0.0.1:3000``.
 

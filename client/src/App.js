@@ -1,26 +1,77 @@
 import './App.css';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
+
+/* @TODO Split into one file per component. */
+
+function Label (props) {
+  return (<label> {props.i+1}. {props.l} : </label>)
+}
 
 function FormField (props) {
-  switch (props.type){
-    case "string":
+  console.log(props.field);
 
-      break;
-    default:
-      break;
+  function label() {
+    return (<Label i={props.i} l={props.field.label}/>);
   }
 
-  return (<div> field </div>)
+  function field() {
+    switch (props.field.type){
+      case "string":
+        return (
+            <input/>
+        )
+      case "select":
+        return (
+            <select>
+              {
+                props.field.options && props.field.options.map(
+                  (opt, i) => {
+                    return (<option value={i} key={i}> {opt}</option>)
+                  }
+                )
+              }
+            </select>
+        )
+      case "text":
+        return (
+            <textarea>
+            </textarea>
+      )
+      case "attachment":
+        return (
+          <input id="image-file" type="file" />
+        )
+      default:
+        return (<div> {props.i}. Champs non géré pour le moment.  </div>);
+    }
+  }
+
+  return (<div>
+    {label()}
+    {field()}
+  </div>)
+}
+
+function SubmitForm (props) {
+  return (
+    <button>Envoyer la demande</button>
+  )
 }
 
 function Form (props) {
   return (
     <div>
       <h1> 
-      Formulaire {props.form.id} : {props.form.title} 
+       {props.form.title} 
       </h1>
+      {/* <h4>
+        Formulaire {props.form.id} 
+      </h4> */}
       <div>
-      { props.form.fields.map( (field, i) => {return <FormField props={field}/>})  }
+        <form>
+        { props.form.fields && props.form.fields.map( (field, i) => {return <FormField field={field} i={i}/>})  }
+        <SubmitForm/>
+        </form>
       </div>
     </div>
   )
@@ -41,6 +92,7 @@ function PickForm (props) {
       </label>
       <select id="select" name="question" onChange={onSelectionChanged}>
         {
+          props.forms && 
           props.forms.map(
             (f, i) => {
               return (
@@ -68,7 +120,6 @@ function App() {
     xmlHttp.send( null);
     if (xmlHttp.status == 200) {
       const r = JSON.parse(xmlHttp.responseText);
-      console.log("forms from server : " + r);  
       return r;
     } else {
       console.err("failed to fetch forms from server.");

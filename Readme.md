@@ -5,15 +5,20 @@
 
 ## Client
 
-L'application client est un projet créé avec create-react-app :
+L'application client est un projet créé avec [create-react-app](https://fr.reactjs.org/docs/create-a-new-react-app.html) :
 
-https://fr.reactjs.org/docs/create-a-new-react-app.html
-
-pour lancer le client:
+### Installation
 
 ```
   cd client
   yarn
+```
+
+### Lancer le client
+
+```
+  cd client
+  yarn start
 ```
 
 Le client est alors accessible depuis ``http://127.0.0.1:3000``.
@@ -66,6 +71,7 @@ Le résultat est :
 ## Todo 
 
 - split App.js into files per react component;
+- implement submit form;
 - implement email sending;
 - implement form content check (email + numero Tahit);
 - mode db to a json file;

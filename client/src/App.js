@@ -11,18 +11,18 @@ function FormField (props) {
   console.log(props.field);
 
   function label() {
-    return (<Label i={props.i} l={props.field.label}/>);
+    return (<Label i={props.i} l={props.field.label} for={"field-"+props.i}/>);
   }
 
   function field() {
     switch (props.field.type){
       case "string":
         return (
-            <input/>
+            <input id={"field-"+props.i}/>
         )
       case "select":
         return (
-            <select>
+            <select id={"field-"+props.i}>
               {
                 props.field.options && props.field.options.map(
                   (opt, i) => {
@@ -34,12 +34,12 @@ function FormField (props) {
         )
       case "text":
         return (
-            <textarea>
+            <textarea id={"field-"+props.i}>
             </textarea>
       )
       case "attachment":
         return (
-          <input id="image-file" type="file" />
+          <input id={"field-"+props.i} type="file" />
         )
       default:
         return (<div> {props.i}. Champs non géré pour le moment.  </div>);
@@ -55,7 +55,7 @@ function FormField (props) {
 
 function SubmitForm (props) {
   return (
-    <button>Soumettre</button>
+    <input type="submit" value="Envoyer le formulaire"/>
   )
 }
 
@@ -69,11 +69,12 @@ function Form (props) {
         Formulaire {props.form.id} 
       </h4> */}
       <div className="form">
-        <form>
+        <form action={props.action} method="post" enctype="multipart/form-data" target="res-frame">
         { props.form.fields && props.form.fields.map( (field, i) => {return <FormField field={field} i={i}/>})  }
         <SubmitForm/>
         </form>
       </div>
+      <iframe name="res-frame"/>
     </div>
   )
 }
@@ -103,7 +104,7 @@ function PickForm (props) {
             })
         }
       </select>
-      <Form form={props.forms[selection]}/>
+      <Form form={props.forms[selection]} action={props.action}/>
     </div>
   )
 }
@@ -130,7 +131,7 @@ function App() {
   return (
     <div className="App">
       <h1> Formulaire de contact </h1>
-      <PickForm forms={getForms()} />
+      <PickForm forms={getForms()} action={server_url + "sendform"} />
     </div>
   );
 }

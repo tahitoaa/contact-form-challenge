@@ -48,3 +48,7 @@ label {
   width: 140px;
   text-align: left;
 }
+
+iframe {
+  height : 50px;
+}

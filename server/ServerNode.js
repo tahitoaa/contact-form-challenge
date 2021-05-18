@@ -1,5 +1,7 @@
 const fs = require('fs');
 const http = require('http');
+var bodyParser = require('body-parser')
+
 /* inspired from : 
     - https://www.digitalocean.com/community/tutorials/how-to-create-a-web-server-in-node-js-with-the-http-module-fr
     - https://www.pabbly.com/tutorials/node-js-http-server-handling-get-and-post-request/
@@ -40,25 +42,21 @@ const requestListener = function (req, res) {
       }
       break;
     case "POST":
-      req.on('data', (form)=> {
-        console.log("Data of the form:");
-        console.log(`${form}`);
-      });
-      switch (req.url){
-        case "form1" :
-          break;
-        case "form2" :
-          break;
-        case "form3" :
-          break;
-        default : 
-          break;
-      }
+      // use multipart/data to allow image upload in F3
+      // https://stackoverflow.com/questions/32204995/parse-multipart-form-data-from-buffer-in-node-js
+      
+      // https://github.com/expressjs/body-parser
 
-      // Common Response on success
+      console.log(req.body)
+      // req.on('body', (form)=> {
+        
+      //   console.log("Data of the form:");
+      //   console.log(form.toString());
+      //           // Common Response on success
+      // });
       res.setHeader("Content-Type", "text/plain");
       res.writeHead(200);
-      res.end(`Recieve POST`);
+      res.end("Nous avons bien recu votre formulaire.");
       break;
     default:
       res.writeHead(404);

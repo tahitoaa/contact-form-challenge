@@ -59,6 +59,9 @@ Exemple de résultat:
 TODO
 pour envoyer un formulaire au format json.
 
+https://stackoverflow.com/questions/32204995/parse-multipart-form-data-from-buffer-in-node-js
+
+
 ### ``GET /availableforms`` 
 
 TODO

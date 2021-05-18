@@ -65,15 +65,11 @@ Exemple de résultat:
 ### ``POST /sendform`` 
 
 TODO
-pour envoyer un formulaire au format json.
+ - envoyer le formulaire;
+ - verifier les valeurs;
+ - sauver en base;
 
 https://stackoverflow.com/questions/32204995/parse-multipart-form-data-from-buffer-in-node-js
-
-
-### ``GET /availableforms`` 
-
-TODO
-pour recevoir la liste des formulaires disponnibles.
 
 ## References 
 
@@ -85,7 +81,6 @@ pour recevoir la liste des formulaires disponnibles.
 ## Todo 
 
 - split App.js into files per react component;
-- implement submit form;
 - implement email sending;
 - implement form content check (email + numero Tahit);
 - mode db to a json file;

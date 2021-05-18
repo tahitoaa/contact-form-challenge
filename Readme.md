@@ -25,6 +25,14 @@ Le client est alors accessible depuis ``http://127.0.0.1:3000``.
 
 ## Serveur
 
+### Prereq
+
+``
+npm install body-parser
+``
+
+### Launch
+
 Pour lancer le serveur :
 
 ```

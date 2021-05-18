@@ -49,12 +49,13 @@ function FormField (props) {
   return (<div>
     {label()}
     {field()}
+    <br></br>
   </div>)
 }
 
 function SubmitForm (props) {
   return (
-    <button>Envoyer la demande</button>
+    <button>Soumettre</button>
   )
 }
 
@@ -67,7 +68,7 @@ function Form (props) {
       {/* <h4>
         Formulaire {props.form.id} 
       </h4> */}
-      <div>
+      <div className="form">
         <form>
         { props.form.fields && props.form.fields.map( (field, i) => {return <FormField field={field} i={i}/>})  }
         <SubmitForm/>

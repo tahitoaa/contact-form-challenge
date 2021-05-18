@@ -18,12 +18,16 @@
         "type": "string"
       },
       {
+        "label": "Numéro Tahiti",
+        "type": "string"
+      },
+      {
         "label" : "Impôt concerné",
         "type" : "select",
         "options" : 
         [ 
           "Impôt sur les sociétés", 
-          "Impôt fonctier"
+          "Impôt foncier"
         ]
       },
       {
@@ -41,12 +45,16 @@
         "type": "string"
       },
       {
+        "label": "Numéro Tahiti",
+        "type": "string"
+      },
+      {
         "label" : "Impôt concerné",
         "type" : "select",
         "options" : 
         [ 
           "Impôt sur les sociétés", 
-          "Impôt fonctier"
+          "Impôt foncier"
         ]
       },
       {

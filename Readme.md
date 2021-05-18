@@ -32,34 +32,37 @@ $ node server/ServerNode.js
 Server running at http://127.0.0.1:3001/
 ```
 
-## API 
+## Server API
 
-``GET /forms`` 
+### ``GET /forms`` 
 
 Pour recevoir les formulaires disponnibles.
-Le résultat est :
+Exemple de résultat:
 
 ```
 [
   {
-    id : "F1",
-    title : "Justificatif DICP"  
-  },
-  {
-    id : "F2",
-    title : "Contentieux"
-  },
-  {
-    id : "F3",
-    title : "Déclaration"
+    "id": "F1",
+    "title": "Justificatif DICP",
+    "fields": [
+      {
+        "label": "Numéro Tahiti",
+        "type": "string"
+      }
+    ]
   }
 ]
-
 ```
 
-``POST /sendform`` pour envoyer un formulaire au format json.
+### ``POST /sendform`` 
 
-``GET /availableforms`` pour recevoir la liste des formulaires disponnibles.
+TODO
+pour envoyer un formulaire au format json.
+
+### ``GET /availableforms`` 
+
+TODO
+pour recevoir la liste des formulaires disponnibles.
 
 ## References 
 

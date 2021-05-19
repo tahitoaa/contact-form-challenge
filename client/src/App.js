@@ -8,8 +8,6 @@ function Label (props) {
 }
 
 function FormField (props) {
-  console.log(props.field);
-
   function label() {
     return (<Label i={props.i} l={props.field.label} for={"field-"+props.i}/>);
   }

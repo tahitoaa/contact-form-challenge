@@ -25,18 +25,20 @@ Le client est alors accessible depuis ``http://127.0.0.1:3000``.
 
 ## Serveur
 
-### Prereq
+### Installation
 
 ``
-npm install body-parser
+cd server
+npm install
 ``
 
-### Launch
+### Lancer le serveur 
 
 Pour lancer le serveur :
 
 ```
-$ node server/ServerNode.js 
+cd server
+npm run serve
 Server running at http://127.0.0.1:3001/
 ```
 
@@ -45,7 +47,7 @@ Server running at http://127.0.0.1:3001/
 ### ``GET /forms`` 
 
 Pour recevoir les formulaires disponnibles.
-Exemple de résultat:
+Exemple de formulaire disponnible:
 
 ```
 [

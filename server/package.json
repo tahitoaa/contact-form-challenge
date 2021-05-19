@@ -4,7 +4,7 @@
   "description": "",
   "main": "src\\ServerNode.js",
   "scripts": {
-    "serve": "node src\\ServerNode.js",
+    "serve": "node src\\ExpressServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

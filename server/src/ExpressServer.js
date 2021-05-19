@@ -37,10 +37,12 @@ app.get('/forms', function(req, res) {
   res.end(JSON.stringify(db.forms));
 })
 
-/** Send a form containing data. */
+/** Send a form which does not contain uploaded files. */
 app.post('/sendform', function (req, res) {
-  // res.header("Content-Type", "application/json");
   logReq(req);
+  res.header("Content-Type", "application/json");
+  res.writeHead(200);
+  res.end("Nous avons bien reçu votre formulaire.");
 })
 
 

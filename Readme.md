@@ -4,7 +4,7 @@
 
 ## Client
 
-L'application client est un projet créé avec [create-react-app](https://fr.reactjs.org/docs/create-a-new-react-app.html) :
+L'application client est un projet créé avec [create-react-app](https://fr.reactjs.org/docs/create-a-new-react-app.html).
 
 Installer avec :
 
@@ -26,10 +26,10 @@ Le client est alors accessible depuis ``http://127.0.0.1:3000``.
 
 Installer avec :
 
-``
+```
 cd server
 npm install
-``
+```
 
 Puis lancer avec :
 

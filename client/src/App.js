@@ -37,7 +37,10 @@ function FormField (props) {
       )
       case "attachment":
         return (
-          <input id={"field-"+props.i} type="file" name={props.field.name}/>
+          <div>
+            <br></br>
+            <input id={"field-"+props.i} type="file" name={props.field.name}/>
+          </div>
         )
       default:
         return (<div> {props.i}. Champs non géré pour le moment.  </div>);
@@ -73,7 +76,7 @@ function Form (props) {
         Formulaire {props.form.id} 
       </h4> */}
       <div className="form">
-        <form action={action} method="post" encType={content_type} target="res-frame">
+        <form action={action + "/" + props.form.id} method="post" encType={content_type} target="res-frame">
           { props.form.fields && props.form.fields.map( (field, i) => {return <FormField field={field} i={i}/>})  }
         <SubmitForm/>
         </form>

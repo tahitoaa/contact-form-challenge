@@ -1,76 +1,122 @@
 
 const express = require('express');
-const fs = require('fs');
 const cors = require('cors');
-const path = require('path');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
-// const bodyParser = require('body-parser');
+// https://express-validator.github.io/docs/check-api.html
+const { check, oneOf, validationResult } = require('express-validator');
+const forms = require('../data/forms');
+const validators = require('../data/validators');
 
-const client_host = "http://127.0.0.1:3000"; 
+const client_host = "http://127.0.0.1:3000";
 
-// Database
-const db = {};
+// Database defining the form fields and validators
+const db = {
+  forms : forms,
+  validators : validators
+};
 
 var app = express();
 
 /* Allow client-server to communicate */
 app.use(cors());
 
-/* form data */
+/* Allow express to parse the post data */
 app.use(express.urlencoded({
   extended: true
 }))
 
+/* Utility to monitor the server */
 const logReq = function (req) {
   console.log(` Recieved ${req.method} request`);
 }
 
-
-/** API */
+/** API Routing*/
 
 /** Acces the list of available forms to render on client. */
 app.get('/forms', function(req, res) {
   logReq(req);
   res.header("Content-Type", "application/json");
   // res.header("Access-Control-Allow-Origin", client_host);
-  res.writeHead(200);
-  if (!db.forms) {
-    console.log("loading database");
-    var data = fs.readFileSync(path.resolve(__dirname, '../data/forms.json'), 'utf8');
-    db.forms = JSON.parse(data);
-    console.log("loaded database");
+  if (db.forms)
+  {
+    res.writeHead(200);
+    res.end(JSON.stringify(db.forms));
   }
-  res.end(JSON.stringify(db.forms));
+  else {
+    res.writeHead(400);
+    res.end("could not locate the forms. ");
+  }
 })
 
-/** Send a form which does not contain uploaded files. */
-app.post('/sendform', upload.none(),function (req, res) {
-  logReq(req);
-  res.header("Content-Type", "application/json");
-  res.writeHead(200);
-  res.end(JSON.stringify(req.body));
-})
+/** Apply the chekcers (express-validator) using validators.js */
+const checkers =  (fid) => {
+  var checks = [];
+  const form = forms.find(f => {return f.id == fid;});
+  if (form){
+    checks = form.fields.map(
+      field => {
+        return db.validators[field.name] ? db.validators[field.name] : check('email').exists();
+      })
+      .flat();
+  }
+  console.log(checks);
+  return checks;
+}
 
-app.post('/sendform_upload', upload.single('attachment'), function (req, res) {
-  logReq(req);
-  res.header("Content-Type", "application/json");
-  res.writeHead(200);
-  res.end(JSON.stringify({ body: req.body, file : req.file}));
-});
+/** The main Routing */
+const routing = (req, res, next) => {
+  try {
+    validationResult(req).throw();
+    logReq(req);
+    res.header("Content-Type", "application/json");
+    res.writeHead(200);
+    res.end("Formulaire valide. " + JSON.stringify(req.body));
+  } catch (err) {
+    logReq(req);
+    res.header("Content-Type", "text/plain");
+    res.writeHead(400);
+    res.end("Formulaire invalide.");
+  }
 
-// // Define Server requests
-// const requestListener = function (req, res) {
+}
 
-//       res.setHeader("Content-Type", "text/plain");
-//       res.writeHead(200);
-//       res.end("Nous avons bien recu votre formulaire.");
-//       break;
-//     default:
-//       res.writeHead(404);
-//       res.end(JSON.stringify({error:"Resource not found"}));
-//   }
-// }
+/**
+ * Decide to use multipart/form-data content type only for forms
+    containing one attachment.
+    The attachments are stored in /uploads
+ * @param {string} fid
+ * @returns the upload mode accordingly
+ */
+const manageUpload = (fid) => {
+  console.log(fid);
+  const form = forms.find(f => {return f.id == fid;});
+  const contains_upload = 
+  form && 
+  form.fields &&
+  form.fields.find(
+  field => {
+    return field.type == "attachment"
+  });
+  return contains_upload ? upload.single('attachment') : upload.none();
+}
+
+/** There is one routing per forms. */
+db.forms.map(form => form.id).forEach(
+  fid => {
+    app.post('/sendform/' + fid,
+    manageUpload(fid),
+    oneOf([checkers(fid)]),
+    routing  
+    );
+  });
+
+// app.post('/sendform_upload', upload.single('attachment'), function (req, res) {
+//   logReq(req);
+//   res.header("Content-Type", "application/json");
+//   res.writeHead(200);
+//   res.end(JSON.stringify({ body: req.body, file : req.file}));
+// });
 
 const hostname = '127.0.0.1';
 const port = 3001;

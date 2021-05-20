@@ -26,10 +26,10 @@ Le client est alors accessible depuis ``http://127.0.0.1:3000``.
 
 Installer avec :
 
-``
+```
 cd server
 npm install
-``
+```
 
 Puis lancer avec :
 

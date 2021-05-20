@@ -1,26 +1,33 @@
 
 const express = require('express');
 const fs = require('fs');
-const cors = require('cors')
+const cors = require('cors');
 const path = require('path');
-
-// const http = require('http');
-// var multer  = require('multer')
-// var upload = multer({ dest: 'uploads/' })
-var app = express();
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+// const bodyParser = require('body-parser');
 
 const client_host = "http://127.0.0.1:3000"; 
 
 // Database
 const db = {};
 
+var app = express();
+
 /* Allow client-server to communicate */
 app.use(cors());
 
+/* form data */
+app.use(express.urlencoded({
+  extended: true
+}))
 
 const logReq = function (req) {
   console.log(` Recieved ${req.method} request`);
 }
+
+
+/** API */
 
 /** Acces the list of available forms to render on client. */
 app.get('/forms', function(req, res) {
@@ -38,13 +45,19 @@ app.get('/forms', function(req, res) {
 })
 
 /** Send a form which does not contain uploaded files. */
-app.post('/sendform', function (req, res) {
+app.post('/sendform', upload.none(),function (req, res) {
   logReq(req);
   res.header("Content-Type", "application/json");
   res.writeHead(200);
-  res.end("Nous avons bien reçu votre formulaire.");
+  res.end(JSON.stringify(req.body));
 })
 
+app.post('/sendform_upload', upload.single('attachment'), function (req, res) {
+  logReq(req);
+  res.header("Content-Type", "application/json");
+  res.writeHead(200);
+  res.end(JSON.stringify({ body: req.body, file : req.file}));
+});
 
 // // Define Server requests
 // const requestListener = function (req, res) {

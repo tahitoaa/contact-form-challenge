@@ -64,10 +64,16 @@ Exemple de formulaire disponnible:
 ### ``POST /sendform`` 
 
 TODO
- - envoyer le formulaire;
+ - recevoir le formulaire;
  - verifier les valeurs;
  - sauver en base;
  - envoyer l'email.
+
+### ``POST /sendform_upload``
+
+TODO
+
+Gérer le fichier upload.
 
 https://stackoverflow.com/questions/32204995/parse-multipart-form-data-from-buffer-in-node-js
 

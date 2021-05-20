@@ -5,7 +5,8 @@
     "fields": [
       {
         "label": "Numéro Tahiti",
-        "type": "string"
+        "type": "string",
+        "name": "NTahiti"
       }
     ]
   },
@@ -14,16 +15,19 @@
     "title": "Contentieux",
     "fields" : [
       {
-        "label": "email",
-        "type": "string"
+        "label": "Adresse email",
+        "type": "string",
+        "name": "email"
       },
       {
         "label": "Numéro Tahiti",
-        "type": "string"
+        "type": "string",
+        "name": "NTahiti"
       },
       {
         "label" : "Impôt concerné",
         "type" : "select",
+        "name" : "service",
         "options" : 
         [ 
           "Impôt sur les sociétés", 
@@ -32,7 +36,8 @@
       },
       {
         "label": "Remarques",
-        "type" : "text"
+        "type" : "text",
+        "name" : "text"
       }
     ]
   },
@@ -41,16 +46,19 @@
     "title": "Déclaration",
     "fields" : [
       {
-        "label": "email",
-        "type": "string"
+        "label": "Adresse email",
+        "type": "string",
+        "name": "email"
       },
       {
         "label": "Numéro Tahiti",
-        "type": "string"
+        "type": "string",
+        "name": "NTahiti"
       },
       {
         "label" : "Impôt concerné",
         "type" : "select",
+        "name" : "service",
         "options" : 
         [ 
           "Impôt sur les sociétés", 
@@ -59,7 +67,8 @@
       },
       {
         "label": "Votre déclaration",
-        "type" : "attachment"
+        "type" : "attachment",
+        "name" : "attachment"
       }
     ]
   }

@@ -16,11 +16,11 @@ function FormField (props) {
     switch (props.field.type){
       case "string":
         return (
-            <input id={"field-"+props.i}/>
+            <input id={"field-"+props.i} name={props.field.name}/>
         )
       case "select":
         return (
-            <select id={"field-"+props.i}>
+            <select id={"field-"+props.i} name={props.field.name}>
               {
                 props.field.options && props.field.options.map(
                   (opt, i) => {
@@ -32,23 +32,23 @@ function FormField (props) {
         )
       case "text":
         return (
-            <textarea id={"field-"+props.i}>
+            <textarea id={"field-"+props.i} name={props.field.name}>
             </textarea>
       )
       case "attachment":
         return (
-          <input id={"field-"+props.i} type="file" />
+          <input id={"field-"+props.i} type="file" name={props.field.name}/>
         )
       default:
         return (<div> {props.i}. Champs non géré pour le moment.  </div>);
     }
   }
 
-  return (<div>
+  return (<fieldset>
     {label()}
     {field()}
     <br></br>
-  </div>)
+  </fieldset>)
 }
 
 function SubmitForm (props) {
@@ -58,6 +58,12 @@ function SubmitForm (props) {
 }
 
 function Form (props) {
+  const contains_upload = props.form && 
+                          props.form.fields && 
+                          (props.form.fields.find(f => {return f.type === "attachment";}) != null);
+  const content_type = contains_upload ? "multipart/form-data" : "application/json";
+  const action = props.server + (contains_upload ? "sendform_upload" : "sendform");
+
   return (
     <div>
       <h1> 
@@ -67,8 +73,8 @@ function Form (props) {
         Formulaire {props.form.id} 
       </h4> */}
       <div className="form">
-        <form action={props.action} method="post" enctype="multipart/form-data" target="res-frame">
-        { props.form.fields && props.form.fields.map( (field, i) => {return <FormField field={field} i={i}/>})  }
+        <form action={action} method="post" encType={content_type} target="res-frame">
+          { props.form.fields && props.form.fields.map( (field, i) => {return <FormField field={field} i={i}/>})  }
         <SubmitForm/>
         </form>
       </div>
@@ -102,7 +108,7 @@ function PickForm (props) {
             })
         }
       </select>
-      <Form form={props.forms[selection]} action={props.action}/>
+      <Form form={props.forms[selection]} server={props.server}/>
     </div>
   )
 }
@@ -129,7 +135,7 @@ function App() {
   return (
     <div className="App">
       <h1> Formulaire de contact </h1>
-      <PickForm forms={getForms()} action={server_url + "sendform"} />
+      <PickForm forms={getForms()} server={server_url} />
     </div>
   );
 }

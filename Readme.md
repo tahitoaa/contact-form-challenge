@@ -4,7 +4,7 @@
 
 ## Client
 
-L'application client est un projet créé avec [create-react-app](https://fr.reactjs.org/docs/create-a-new-react-app.html) :
+L'application client est un projet créé avec [create-react-app](https://fr.reactjs.org/docs/create-a-new-react-app.html).
 
 Installer avec :
 

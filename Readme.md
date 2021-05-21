@@ -5,6 +5,7 @@
 - split App.js into files per react component;
 - implement email sending;
 - nettoyer les require inutiles;
+- reference upload file together with the form;
 - pb : auto fill en passant de f1 à f2 avec le champs NTahiti -> email ;
 
 
@@ -128,6 +129,9 @@ Chaque formulaire valide est stocké qu format ``json`` dans ``serer/data/reciev
 ### Ajout d'un formulaire
 
 Pour ajouter un nouveau formulaire il faut l'ajouter dans ``server/data/forms`` (avec eventuellement les nouveaux champs, et le cas échéant les checks correspondant dans ``/server/data/validators``. Si le formulaire contient un nouveau champ il faut définir le rendu côté client de ce type de champs (ex. radio bouton).
+
+### Email de notification
+* https://nodemailer.com/about/
 
 TODO
  - send fake email to service;

@@ -61,18 +61,13 @@ Exemple de formulaire disponnible:
 ]
 ```
 
-### ``POST /sendform`` 
+### ``POST /sendform/F1`` 
+### ``POST /sendform/F2`` 
+### ``POST /sendform/F3`` 
 
 TODO
- - verifier les valeurs;
  - sauver en base;
  - envoyer l'email.
-
-### ``POST /sendform_upload``
-
-Taille max : 10kb.
-
-https://stackoverflow.com/questions/32204995/parse-multipart-form-data-from-buffer-in-node-js
 
 ## References 
 
@@ -85,5 +80,3 @@ https://stackoverflow.com/questions/32204995/parse-multipart-form-data-from-buff
 
 - split App.js into files per react component;
 - implement email sending;
-- implement form content check (email + numero Tahit);
-- mode db to a json file;

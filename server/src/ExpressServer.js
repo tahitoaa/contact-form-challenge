@@ -2,18 +2,19 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
+fs = require('fs');                     // To write recieved forms into server
 const upload = multer({ dest: 'uploads/' });
 // https://express-validator.github.io/docs/check-api.html
 const { check, oneOf, validationResult } = require('express-validator');
 const forms = require('../data/forms');
-const validators = require('../data/validators');
+const {validators, NTahitiRegex} = require('../data/validators');
 
 const client_host = "http://127.0.0.1:3000";
 
 // Database defining the form fields and validators
 const db = {
   forms : forms,
-  validators : validators
+  validators : validators,
 };
 
 var app = express();
@@ -60,20 +61,30 @@ const checkers =  (fid) => {
       })
       .flat();
   }
-  console.log(checks);
   return checks;
 }
 
 /** The main Routing */
 const routing = (req, res, next) => {
+  logReq(req);
   try {
     validationResult(req).throw();
-    logReq(req);
-    res.header("Content-Type", "application/json");
-    res.writeHead(200);
-    res.end("Formulaire valide. " + JSON.stringify(req.body));
+    /** Save the body into the database. */
+    // WARNING using date is not safe to index forms (possible collisions)
+    // TODO use hashing of the body instead
+    const filename = `./data/recieved/${req.path.replace('sendform/','')}/Formulaire-${new Date().getTime()}.json`;
+    console.log(filename);
+    fs.closeSync(fs.openSync(filename, 'w'));
+    fs.writeFile(filename, JSON.stringify(req.body), function (err) {
+      if (err)
+        err.throw();
+
+      res.header("Content-Type", "application/json");
+      res.writeHead(200);
+      res.end("Formulaire valide. ");
+    });
   } catch (err) {
-    logReq(req);
+    console.log("Rejected POST" + err.message);
     res.header("Content-Type", "text/plain");
     res.writeHead(400);
     res.end("Formulaire invalide.");
@@ -89,7 +100,6 @@ const routing = (req, res, next) => {
  * @returns the upload mode accordingly
  */
 const manageUpload = (fid) => {
-  console.log(fid);
   const form = forms.find(f => {return f.id == fid;});
   const contains_upload = 
   form && 
@@ -102,14 +112,17 @@ const manageUpload = (fid) => {
 }
 
 /** There is one routing per forms. */
-db.forms.map(form => form.id).forEach(
-  fid => {
-    app.post('/sendform/' + fid,
-    manageUpload(fid),
-    oneOf([checkers(fid)]),
-    routing  
-    );
-  });
+db.forms.map(form => {return form.id})
+        .forEach(
+          fid => {
+            const route = '/sendform/' + fid;
+            console.log("Routing to " + route);
+            app.post(route,
+              manageUpload(fid),
+              oneOf([checkers(fid)]),
+              routing  
+            );
+          });
 
 // app.post('/sendform_upload', upload.single('attachment'), function (req, res) {
 //   logReq(req);

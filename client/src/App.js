@@ -65,8 +65,7 @@ function Form (props) {
                           props.form.fields && 
                           (props.form.fields.find(f => {return f.type === "attachment";}) != null);
   const content_type = contains_upload ? "multipart/form-data" : "application/json";
-  const action = props.server + (contains_upload ? "sendform_upload" : "sendform");
-
+  const action_url = `${props.server}sendform/${props.form.id}`;
   return (
     <div>
       <h1> 
@@ -76,7 +75,7 @@ function Form (props) {
         Formulaire {props.form.id} 
       </h4> */}
       <div className="form">
-        <form action={action + "/" + props.form.id} method="post" encType={content_type} target="res-frame">
+        <form action={action_url} method="post" encType={content_type} target="res-frame">
           { props.form.fields && props.form.fields.map( (field, i) => {return <FormField field={field} i={i}/>})  }
         <SubmitForm/>
         </form>

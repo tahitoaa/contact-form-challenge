@@ -20,7 +20,7 @@ const service = {
   "name" : "service",
   "options" : 
   [ 
-    "Impôt sur les sociétés", 
+    "Impôt sur les sociétés",
     "Impôt foncier"
   ]
 }
@@ -42,11 +42,13 @@ const forms =  [
   {
     id: "F1",
     title: "Justificatif DICP",
-    fields: [NTahiti]
+    fields: [NTahiti],
+    service : "dicp"
   },
   {
     id: "F2",
     title: "Contentieux",
+    service : "contentieux",
     fields : [
       email,
       NTahiti,
@@ -56,6 +58,7 @@ const forms =  [
   {
     id: "F3",
     title: "Déclaration",
+    service : "declarations",
     fields : [
       email,
       NTahiti,

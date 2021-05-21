@@ -7,6 +7,7 @@ const upload = multer({ dest: 'uploads/' });
 // https://express-validator.github.io/docs/check-api.html
 const { check, oneOf, validationResult } = require('express-validator');
 const forms = require('../data/forms');
+const services = require('../data/services');
 const {validators, NTahitiRegex} = require('../data/validators');
 
 const client_host = "http://127.0.0.1:3000";
@@ -68,21 +69,68 @@ const checkers =  (fid) => {
 const routing = (req, res, next) => {
   logReq(req);
   try {
+    /* Validate the request body, i.e. the fields */
     validationResult(req).throw();
+    console.log(req.file.filename);
+
+    const formid = req.path.replace('/sendform/','');
+
     /** Save the body into the database. */
     // WARNING using date is not safe to index forms (possible collisions)
     // TODO use hashing of the body instead
-    const filename = `./data/recieved/${req.path.replace('sendform/','')}/Formulaire-${new Date().getTime()}.json`;
+    const filename = `./data/recieved/${formid}/Formulaire-${new Date().getTime()}.json`;
     console.log(filename);
     fs.closeSync(fs.openSync(filename, 'w'));
-    fs.writeFile(filename, JSON.stringify(req.body), function (err) {
-      if (err)
-        err.throw();
+    fs.writeFile(filename, 
+      JSON.stringify({
+        formulaire : req.body,
+        attachments : req.file ? req.file.filename : null
+      }), 
+      function (err) {
+        /* If the form is not saved into the database,
+        we consider the request has failed and response 400
+        to the POST
+        */
+        if (err)
+          err.throw();
 
-      res.header("Content-Type", "application/json");
-      res.writeHead(200);
-      res.end("Formulaire valide. ");
-    });
+        /* Code from https://nodemailer.com/about/ */
+        /* Send an email notification to the corresponding service */
+        const form = forms.find(f => {return f.id == formid});
+        console.log(form);
+        const reciever = services[form.service];
+        console.log(` TODO Send email notification to ${reciever}.`)
+        // var transport = nodemailer.createTransport({
+        //   host: "smtp.mailtrap.io",
+        //   port: 2525,
+        //   auth: {
+        //     user: "",
+        //     pass: ""
+        //   }
+        // });
+              
+        // // send mail with defined transport object
+        // let info = await transporter.sendMail({
+        //   from: '"Fred Foo 👻" <foo@example.com>', // sender address
+        //   to: "bar@example.com, baz@example.com", // list of receivers
+        //   subject: "Hello ✔", // Subject line
+        //   text: "Hello world?", // plain text body
+        //   html: "<b>Hello world?</b>", // html body
+        // });
+
+        // console.log("Message sent: %s", info.messageId);
+        // // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+        // // Preview only available when sending through an Ethereal account
+        // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        // // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+
+        /* If we reach this code, the POST was succesfull */
+        res.header("Content-Type", "application/json");
+        res.writeHead(200);
+        res.end("Formulaire valide. ");
+      });
   } catch (err) {
     console.log("Rejected POST" + err.message);
     res.header("Content-Type", "text/plain");

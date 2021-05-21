@@ -1,5 +1,13 @@
 # Challenge Fullstack - Formulaire de Contact
 
+## Todo 
+
+- split App.js into files per react component;
+- implement email sending;
+- nettoyer les require inutiles;
+- pb : auto fill en passant de f1 à f2 avec le champs NTahiti -> email ;
+
+
 # Installation et lancement
 
 Il faut lancer en parallèle un client et un serveur.
@@ -130,11 +138,3 @@ TODO
 * https://www.digitalocean.com/community/tutorials/how-to-create-a-web-server-in-node-js-with-the-http-module-fr
 
 * https://www.freecodecamp.org/news/how-to-create-a-react-app-with-a-node-backend-the-complete-guide/
-
-
-## Todo 
-
-- split App.js into files per react component;
-- implement email sending;
-- nettoyer les require inutiles;
-- pb : auto fill en passant de f1 à f2 avec le champs NTahiti -> email ;

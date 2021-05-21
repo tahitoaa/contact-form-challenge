@@ -41,6 +41,9 @@ Server running at http://127.0.0.1:3001/
 
 ## Server API
 
+Le serveur est utilise ExpressJS pour le routage.
+Les fonctions ouvertes sont les suivantes.
+
 ### ``GET /forms`` 
 
 Pour recevoir les formulaires disponnibles.
@@ -61,12 +64,34 @@ Exemple de formulaire disponnible:
 ]
 ```
 
-### ``POST /sendform/F1`` 
-### ``POST /sendform/F2`` 
-### ``POST /sendform/F3`` 
+Les formulaires disponnibles sont stockés dans  ``server/data/forms.js``.
+Chaque formulaire contient un titre et une liste de champs prédéfinis (certains champs sont communs entre plusieurs formulaires).
+
+### Envoi de formulaires
+
+Chaque formulaire possède son API.
+
+#### ``POST /sendform/F1`` 
+#### ``POST /sendform/F2`` 
+#### ``POST /sendform/F3`` 
+
+#### Validation des champs
+
+Les champs sont validés en utilisant le module [express-validator](https://express-validator.github.io/docs/).
+La validation est faite côté serveur.
+Les règles de validations sont définies par champ (et pas par formulaire) dans le fichier ``server/data/validators.js``.
+
+#### Stockage en base de donnée
+
+Chaque formulaire valide est stocké qu format ``json`` dans ``serer/data/recieved/$fid`` où  ``$fid`` est l'identifiant du formulaire dans ``server/data/forms``.
+
+#### Ajout d'un formulaire
+
+Pour ajouter un nouveau formulaire il faut l'ajouter dans ``server/data/forms`` (avec eventuellement les nouveaux champs, et le cas échéant les checks correspondant dans ``/server/data/validators``.
 
 TODO
  - send fake email to service;
+ - display server response to post in client (e.g. invalid forms etc.)
  
 ## References 
 

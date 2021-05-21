@@ -66,9 +66,8 @@ Exemple de formulaire disponnible:
 ### ``POST /sendform/F3`` 
 
 TODO
- - sauver en base;
- - envoyer l'email.
-
+ - send fake email to service;
+ 
 ## References 
 
 * https://www.digitalocean.com/community/tutorials/how-to-create-a-web-server-in-node-js-with-the-http-module-fr
@@ -80,3 +79,5 @@ TODO
 
 - split App.js into files per react component;
 - implement email sending;
+- nettoyer les require inutiles;
+- pb : auto fill en passant de f1 à f2 avec le champs NTahiti -> email ;
